@@ -10,7 +10,7 @@ export default function Footer() {
       <div className='bg-[#387373]'>
         <section className=' pt-10'>
           <div className=' text-md-start mt-5 '>
-            <div className='mt-3 mx-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8'>
+            <div className='mt-3 mx-8 md:mx-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-16 md:gap-8'>
               <div className='space-y-6 mx-auto mb-4'>
                 <Link
                   to='/'

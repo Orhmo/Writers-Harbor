@@ -42,13 +42,41 @@ export default function Logo() {
                   to={to}
                   smooth
                   duration={500}
-                  className='no-underline border border-[#FFF3EA] flex flex-row px-4 pr-4 cursor-pointer capitalize py-6 text-md text-red-950  bg-white w-full  hover:text-red-500 hover:bg-white'
+                  className='no-underline border border-[#93BFB7] flex flex-row px-4 pr-4 cursor-pointer capitalize py-6 text-md text-[#387373]  bg-white w-full  hover:[#2D3E40] hover:bg-white'
                   onClick={toggleSideBar}
                 >
                   {link}
                 </Link>
               </li>
             ))}
+            <li>
+            {/* Sign In Button */}
+            <div className='items-center no-underline border border-[#93BFB7] flex flex-row px-4 pr-4 cursor-pointer capitalize py-6 text-md text-white bg-white w-full  hover:[#2D3E40] hover:bg-white'>
+              <Link to='/signin' className='lg:inline-block'>
+                <button
+                  className={`text-center py-2 text-sm font-medium hover:text-white border-2 bg-[#387373] hover:bg-[#2D3E40] rounded-lg transition-all  px-6 ${
+                    isScrolled ? 'text-black' : 'text-white'
+                  }`}
+                >
+                  Sign in
+                </button>
+              </Link>
+            </div>
+            </li>
+            <li>
+            {/* Sign Up Button */}
+            <div className='no-underline border border-[#93BFB7] flex flex-row px-4 pr-4 cursor-pointer capitalize py-6 text-md text-white  bg-white w-full  hover:[#2D3E40] hover:bg-white'>
+              <Link to='/signup' className='lg:inline-block'>
+                <button
+                 className={`text-center py-2 text-sm font-medium hover:text-white border-2 bg-[#387373] hover:bg-[#2D3E40] rounded-lg transition-all  px-3 ${
+                  isScrolled ? 'text-black' : 'text-white'
+                }`}
+                >
+                  Get started
+                </button>
+              </Link>
+            </div>
+            </li>
           </ul>
         )}
       </nav>
