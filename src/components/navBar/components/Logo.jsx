@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { CompanyLogo } from '../utils/svg';
-import { LINKS } from '../utils/data';
+import { LINKS } from '../../../utils/data';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 

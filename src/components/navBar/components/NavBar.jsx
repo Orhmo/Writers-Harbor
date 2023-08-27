@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LINKS } from '../utils/data';
+import { LINKS } from '../../../utils/data';
 
 export default function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
