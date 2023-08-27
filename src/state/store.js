@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import newsletterReducer from './newsletter/newsletterReducer';
+import userReducer from './user/userReducers';
 
 
 /**
@@ -13,7 +14,8 @@ import newsletterReducer from './newsletter/newsletterReducer';
 
 const store = configureStore({
   reducer: {
-        newsletter: newsletterReducer,
+    user: userReducer,
+    newsletter: newsletterReducer,
   },
 });
 

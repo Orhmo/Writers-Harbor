@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
   FiSun,
@@ -110,27 +111,31 @@ export default function TopNavBar() {
             </div>
           </div>
 
-          <div className='flex gap-2'>
+          <div className='hidden md:flex gap-2'>
             {/* Sign In Button */}
             <div className='flex items-center'>
-              <button
-                  className={`hidden lg:inline-block text-center bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] hover:border-2 hover:border-white rounded-lg transition-all  px-2 ${
+              <Link to='/signin' className='lg:inline-block'>
+                <button
+                  className={`text-center bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] hover:border-2 hover:border-white rounded-lg transition-all  px-2 ${
                     isScrolled ? 'text-black' : 'text-white'
                   }`}
                 >
                   Sign in
-              </button>
+                </button>
+              </Link>
             </div>
 
             {/* Sign Up Button */}
             <div>
-              <button
-                className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] hover:border-[#2D3E40] ${
-                  isScrolled ? 'text-black' : 'text-white'
-                }`}
-              >
-                Get started
-              </button>
+              <Link to='/signup' className='lg:inline-block'>
+                <button
+                  className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] hover:border-[#2D3E40] ${
+                    isScrolled ? 'text-black' : 'text-white'
+                  }`}
+                >
+                  Get started
+                </button>
+              </Link>
             </div>
           </div>
         </nav>
