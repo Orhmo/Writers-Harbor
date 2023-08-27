@@ -1,19 +1,14 @@
 import './index.css';
 import React, { useState } from 'react';
-import Home from './pages/Home';
-import NavBar from './components/NavBar';
 import Footer from './components/Footer';
-import TopNavBar from './components/TopNavBar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Logo from './components/Logo';
+import MainNavBar from './components/navBar/Main';
 
 function App() {
   return (
     <>
       <Router>
-        <TopNavBar />
-        <Logo />
-        <NavBar />
+        <MainNavBar />
         <div className='content'>
           <Routes>
             {/* <Route path='/' exact element={<Home />} /> */}

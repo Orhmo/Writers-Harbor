@@ -77,7 +77,7 @@ export default function NewsletterSection() {
                 <button
                   type='submit'
                   onClick={() => setNewsLetter(!newsLetter)}
-                  className='md:w-1/5 py-2 px-4 mb-4 bg-[#387373] text-white font-bold rounded-e-xl hover:bg-red-800 '
+                  className='md:w-1/5 py-2 px-4 mb-4 bg-[#387373] text-white font-bold rounded-e-xl hover:bg-[#2D3E40] '
                 >
                   <p className='text-sm md:text-base'>Subscribe</p>
                 </button>

@@ -125,7 +125,7 @@ export default function TopNavBar() {
             {/* Sign Up Button */}
             <div>
               <button
-                className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] ${
+                className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] hover:border-[#2D3E40] ${
                   isScrolled ? 'text-black' : 'text-white'
                 }`}
               >
