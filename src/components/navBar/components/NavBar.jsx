@@ -37,7 +37,7 @@ export default function NavBar() {
               duration={500}
               className={`p-4 hover:text-black ${
                 isScrolled
-                  ? 'text-black hover:text-white '
+                  ? 'text-[#93BFB7] hover:text-white '
                   : 'text-white hover:text-black '
               } ${pathname === to ? 'font-bold text-secondary' : ''}`}
               activeclassname='border-b-2 border-secondary-200 text-secondary'

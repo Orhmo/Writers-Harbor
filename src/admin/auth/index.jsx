@@ -59,7 +59,7 @@ function AdminLoginForm() {
   };
   return (
     <div className='flex w-[100%] align-center mx-auto justify-center items-center h-screen bg-cover bg-center' style={{ backgroundImage: 'url("../../assets/background.jpg")' }}>
-      <div className='shadow-lg shadow-[#E4F2E7] p-10 bg-[#E4F2E7] bg-opacity-80 rounded-xl'>
+      <div className='shadow-lg shadow-[#E4F2E7] p-10 bg-[#E4F2E7] bg-opacity-80 rounded-xl mx-4'>
       <form
           onSubmit={handleSubmit}
           className='bg-[#2D3E40] shadow-lg rounded-xl px-10 pt-6 pb-8 mb-4 w-full'

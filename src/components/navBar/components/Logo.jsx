@@ -22,7 +22,7 @@ export default function Logo() {
             to='/'
             className='align-center flex items-center justify-center pt-2'
           >
-            <p className='text-5xl leading-8 style text-white no-underline'>
+            <p className='text-5xl leading-8 style text-white no-underline hover:opacity-80'>
              writersHarbor
             </p>
           </Link>
@@ -30,7 +30,7 @@ export default function Logo() {
         {/* Mobile menu button */}
         <div
           onClick={toggleSideBar}
-          className='flex cursor-pointer pr-4 text-black opacity-75 transform hover:opacity-100 lg:hidden items-end z-10'
+          className='flex cursor-pointer pr-4 my-auto opacity-75 transform hover:opacity-100 lg:hidden items-end z-10 text-[#93BFB7]'
         >
           {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </div>

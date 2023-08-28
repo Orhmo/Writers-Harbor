@@ -89,18 +89,18 @@ export default function TopNavBar() {
                   )}
                   <div className='text-white flex gap-2 cursor-default'>
                     <span
-                      className={`text-base ${isScrolled ? 'text-black' : ''}`}
+                      className={`text-base ${isScrolled ? 'text[#93BFB7]' : ''}`}
                     >
                       {weatherTemp}°C
                     </span>
                     <div
-                      className={`font-bold ${isScrolled ? 'text-black' : ''}`}
+                      className={`font-bold ${isScrolled ? 'text[#93BFB7]' : ''}`}
                     >
                       {cityName}
                     </div>
                     <div
                       className={`text-xs pt-1.5 ${
-                        isScrolled ? 'text-black' : ''
+                        isScrolled ? 'text[#93BFB7]' : ''
                       }`}
                     >
                       {currentDate}
@@ -117,7 +117,7 @@ export default function TopNavBar() {
               <Link to='/signin' className='lg:inline-block'>
                 <button
                   className={`text-center bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] hover:border-2 hover:border-white rounded-lg transition-all  px-2 ${
-                    isScrolled ? 'text-black' : 'text-white'
+                    isScrolled ? 'text-[#93BFB7]' : 'text-white'
                   }`}
                 >
                   Sign in
@@ -130,7 +130,7 @@ export default function TopNavBar() {
               <Link to='/signup' className='lg:inline-block'>
                 <button
                   className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] hover:border-[#2D3E40] ${
-                    isScrolled ? 'text-black' : 'text-white'
+                    isScrolled ? 'text-[#93BFB7]' : 'text-white'
                   }`}
                 >
                   Get started
