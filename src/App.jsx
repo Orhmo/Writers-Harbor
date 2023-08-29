@@ -1,33 +1,35 @@
-import './index.css';
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { lazy, Suspense } from "react";
+import { useAuth } from "./context/authContext";
+import { ToastContainer } from "react-toastify";
+import TypewriterText from "./components/others/TypewriterText";
 
-import SignUp from './auth/signUp';
-import Admin from './admin';
-import Home from './pages/Home';
-import LandingLayout from './routes/LandingLayout';
-import AuthLayout from './routes/AuthLayout';
-import SignIn from './auth/SignIn';
+const AuthenticatedRoutes = lazy(() =>
+  import("./components/routes/AuthenticatedRoutes")
+);
+const UnAuthenticatedRoutes = lazy(() =>
+  import("./components/routes/UnAuthenticatedRoutes")
+);
 
-function App() {
-  return (
-    <>
-      <Router>
-        <Routes>
-           {/* Application Routes */}
-          <Route element={<LandingLayout />}>
-            <Route path='/' exact element={<Home />} />
-          </Route>
-          {/* Admin Auth */}
-          <Route element={<AuthLayout />}>
-            <Route path='/admin' element={<Admin />} />
-            <Route path='/signin' element={<SignIn />} />
-            <Route path='/signup' element={<SignUp />} />
-          </Route>
-        </Routes>
-      </Router>
-    </>
+const App = () => {
+  const { authorized } = useAuth();
+
+  const suspenseFallback = (
+    <div className="absolute inset-0 flex justify-center items-center">
+      <div className="flex flex-col gap-8 justify-center items-center">
+        <p className="text-5xl leading-8 style text-white no-underline hover:opacity-80">
+          <TypewriterText text="writersHarbor....." repetitions={2} />
+        </p>
+      </div>
+    </div>
   );
-}
+
+  return (
+    <Suspense fallback={suspenseFallback}>
+      <ToastContainer />
+      {authorized ? <AuthenticatedRoutes /> : <UnAuthenticatedRoutes />}
+    </Suspense>
+  );
+};
 
 export default App;
+

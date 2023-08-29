@@ -3,29 +3,38 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { EyeClose, EyeEmpty } from 'iconoir-react';
 import { loginUser } from '../../state/user/userActions';
+import { BASE_URL, CREATE_USER } from '../../constants/endpoints.constant';
+import { useFetch } from '../../hooks/useFetch';
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
 
 function SignUpForm() {
   const dispatch = useDispatch();
+  const { sendRequest, isLoading } = useFetch();
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     gender: '',
-    jobRole: '',
+    job_role: '',
     department: '',
     address: '',
+    role: '',
   });
 
   const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
-    jobRole: '',
+    job_role: '',
     department: '',
     address: '',
+    role: '',
     gender: '',
     signUpError: '',
   });
@@ -49,12 +58,12 @@ function SignUpForm() {
 
     const newErrors = {};
 
-    if (formData.firstName.length < 2) {
-      newErrors.firstName = 'First name must have at least 2 characters';
+    if (formData.first_name.length < 2) {
+      newErrors.first_name = 'First name must have at least 2 characters';
     }
 
-    if (formData.lastName.length < 2) {
-      newErrors.lastName = 'Last name must have at least 2 characters';
+    if (formData.last_name.length < 2) {
+      newErrors.last_name = 'Last name must have at least 2 characters';
     }
 
     if (formData.email.trim() === '') {
@@ -67,6 +76,9 @@ function SignUpForm() {
       newErrors.password = 'Password should include at least 6 characters';
     }
 
+    if (formData.role.trim() === '') {
+      newErrors.role = 'Role cannot be empty';
+    }
 
     setErrors(newErrors);
 
@@ -75,9 +87,33 @@ function SignUpForm() {
     }
   };
 
+  const submitDetails = async (formData) => {
+    try {
+      const response = await axios.post(`${BASE_URL}${CREATE_USER}`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 200) {
+        // User creation successful
+        toast.success('User created successfully!');
+        const token = response.data.token;
+          setItem('token', token);
+
+      } else {
+        toast.error('Failed to create user.');
+      }
+    } catch (error) {
+      // Handle errors
+      console.error('Error creating user:', error);
+      toast.error('An error occurred while creating the user.');
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     const newErrors = {};
 
     if (!formData.email.includes('@')) {
@@ -88,8 +124,8 @@ function SignUpForm() {
       newErrors.password = 'Password should include at least 6 characters';
     }
 
-    if (formData.jobRole.length < 2) {
-      newErrors.jobRole = 'Job role must have at least 2 characters';
+    if (formData.job_role.length < 2) {
+      newErrors.job_role = 'Job role must have at least 2 characters';
     }
 
     if (formData.department.length < 2) {
@@ -105,15 +141,16 @@ function SignUpForm() {
     }
 
     setErrors(newErrors);
-
+    
     if (Object.keys(newErrors).length === 0) {
-      dispatch(loginUser(formData)); // Dummy action call
+      dispatch(loginUser(formData));
+      submitDetails()// Dummy action call
     }
   };
 
   return (
-    <div className='flex justify-center align-center overflow-x-hidden my-12 md:my-8'>
-      <div className='w-fit px-4 py-2 md:py-20 md:px-8'>
+    <div className='w-[80vw] md:w-[40vw] my-12 md:my-8'>
+      <div className='mx-auto px-4 py-2 md:py-20 md:px-8'>
         <form onSubmit={handleSubmit} className='bg-[#2D3E40] shadow-lg rounded-xl px-12 pt-6 pb-8 mb-4'>
             <div className='my-4'>
               <h1 className='text-[20px] md:text-[24px] font-bold leading-9 text-[#E4F2E7]'>
@@ -125,61 +162,85 @@ function SignUpForm() {
             </div>
           {step === 1 && (
             <>
-              <div className='flex flex-col md:flex-row md:space-x-4'>
-            <label className='block my-2'>
-                <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
-                First Name:
-                </span>
-                <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
-                  <input
-                  className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
-                  type='text'
-                  id='firstName'
-                  name='firstName'
-                  value={formData.firstName}
-                  onChange={handleChange}
-                    required
-                  />
-                  {errors.firstName && (
-                    <div className='text-red-500 text-sm mt-1'>{errors.firstName}</div>
+              <div className=''>
+              <label className='block my-2'>
+                  <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
+                    Role:
+                  </span>
+                  <div className='mt-1'>
+                    <select
+                      className='block w-full indent-1 text-xs md:text-sm border-2 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2]'
+                      id='role'
+                      name='role'
+                      value={formData.role}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value=''>Select Role</option>
+                      <option value='male'>Admin</option>
+                      <option value='female'>Employee</option>
+                    </select>
+                    {errors.role && (
+                      <div className='text-red-500 text-sm mt-1'>{errors.role}</div>
                     )}
-                </div>
-              </label>
-
-            <label className='block my-2'>
-                <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
-                Last Name:
-                </span>
-                <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
-                  <input
-                  className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
-                  type='text'
-                  id='lastName'
-                  name='lastName'
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                  />
-              {errors.lastName && (
-                <div className='text-red-500 text-sm mt-1'>{errors.lastName}</div>
-              )}
+                  </div>
+                </label>
               </div>
-            </label>
-          </div>
+              <div className='flex flex-col md:flex-row md:space-x-2'>
+                <label className='block my-2 w-full'>
+                  <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
+                  First Name:
+                  </span>
+                  <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
+                    <input
+                    className='block border-2 w-full indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
+                    type='text'
+                    id='first_name'
+                    name='first_name'
+                    value={formData.first_name}
+                    onChange={handleChange}
+                      required
+                    />
+                    {errors.first_name && (
+                      <div className='text-red-500 text-sm mt-1'>{errors.first_name}</div>
+                      )}
+                  </div>
+                </label>
 
-          <div className='flex flex-col md:flex-row md:space-x-4'>
-            <label className='block my-2'>
+                <label className='block my-2 w-full'>
+                    <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
+                    Last Name:
+                    </span>
+                    <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
+                      <input
+                      className='block w-full border-2 indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
+                      type='text'
+                      id='last_name'
+                      name='last_name'
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      required
+                      />
+                  {errors.last_name && (
+                    <div className='text-red-500 text-sm mt-1'>{errors.last_name}</div>
+                  )}
+                  </div>
+                </label>
+              </div>
+
+          <div className='flex flex-col md:flex-row md:space-x-2'>
+            <label className='block my-2 w-full'>
                   <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                   Email:
                   </span>
-                  <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                  <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                     <input
-                    className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                    className='block border-2 w-full indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                     type='email'
-                  id='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleChange}
+                    id='email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
                     required
                     />
                 {errors.email && (
@@ -187,13 +248,13 @@ function SignUpForm() {
                 )}
                 </div>
             </label>
-            <label className='block my-2'>
+            <label className='block my-2 w-full'>
                 <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                  Password:
                 </span>
-                <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                   <input
-                  className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                  className='block border-2 w-full indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                   type={showPassword ? 'text' : 'password'}
                   id='password'
                   name='password'
@@ -202,7 +263,7 @@ function SignUpForm() {
                   required
                   />
                  <span
-                    className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                    className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-xs md:text-sm'
                     onClick={togglePasswordVisibility}
                   >
                     {showPassword ? <EyeClose /> : <EyeEmpty />}
@@ -220,33 +281,33 @@ function SignUpForm() {
             <>
                
           <div className='flex flex-col md:flex-row md:space-x-4'>
-            <label className='block my-2'>
+            <label className='block my-2 w-full'>
                     <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                     Job Role:
                     </span>
-                    <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                    <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                       <input
-                      className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                      className='block border-2 w-full indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                       type='text'
-                      id='jobRole'
-                      name='jobRole'
-                      value={formData.jobRole}
+                      id='job_role'
+                      name='job_role'
+                      value={formData.job_role}
                       onChange={handleChange}
                       required
                       />
-                  {errors.jobRole && (
-                    <div className='text-red-500 text-sm mt-1'>{errors.jobRole}</div>
+                  {errors.job_role && (
+                    <div className='text-red-500 text-sm mt-1'>{errors.job_role}</div>
                   )}
                   </div>
               </label>
                 
-              <label className='block my-2'>
+              <label className='block my-2 w-full'>
                     <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                     Department:
                     </span>
-                    <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                    <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                       <input
-                      className='block w-full border-2 indent-4 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                      className='block border-2 w-full indent-1 md:indent-4 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                       type='text'
                       id='department'
                       name='department'
@@ -261,14 +322,14 @@ function SignUpForm() {
               </label>
               </div>
 
-          <div className='flex flex-col md:flex-row md:space-x-4'>
-          <label className='block my-2'>
+          <div className='flex flex-col md:flex-row md:space-x-4 w-full'>
+          <label className='block my-2 w-full'>
                     <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                     Address:
                     </span>
-                    <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                    <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                       <textarea
-                      className='block w-full text-sm border-2 indent-1 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                      className='block border-2 w-full indent-1 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                       id='address'
                       name='address'
                       value={formData.address}
@@ -280,13 +341,13 @@ function SignUpForm() {
                       )}
                   </div>
               </label> 
-               <label className='block my-2'>
+               <label className='block my-2 w-full'>
                     <span className='text-[#E4F2E7] text-sm leading-6 font-normal'>
                     Gender:
                     </span>
-                    <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
+                    <div className='mt-1 w-full relative border-[6px] border-[#2D3E40] rounded-lg'>
                       <select
-                      className='block w-full text-sm border-2 indent-1 py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                      className='block w-full border-2 indent-1 py-1 md:py-2 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] text-xs md:text-sm'
                       id='gender'
                       name='gender'
                       value={formData.gender}
@@ -302,7 +363,7 @@ function SignUpForm() {
                       <div className='text-red-500 text-sm mt-1'>{errors.gender}</div>
                     )}
                   </div>
-            </label>   
+                </label>   
           </div>
             </>
           )}
@@ -315,7 +376,7 @@ function SignUpForm() {
           <button
             type='button'
             onClick={handleNext}
-            className='flex justify-center py-2 px-8  text-[#E4F2E7] border-[#387373] bg-[#387373] rounded-full hover:text-[#2D3E40]'
+            className='flex justify-center py-2 px-8 text-sm md:text-base text-[#E4F2E7] border-[#387373] bg-[#387373] rounded-full hover:text-[#2D3E40]'
           >
             Next
           </button>
@@ -325,12 +386,12 @@ function SignUpForm() {
           <button
             type='submit'
             onClick={handleSubmit}
-            className='flex justify-center py-2 px-8  text-[#E4F2E7] border-[#387373] bg-[#387373] rounded-full hover:text-[#2D3E40]'
+            className='flex justify-center py-2 px-8 text-sm md:text-base text-[#E4F2E7] border-[#387373] bg-[#387373] rounded-full hover:text-[#2D3E40]'
           >
             Sign Up
           </button>
         )}
-      </div>
+          </div>
         </form>
       </div>
     </div>

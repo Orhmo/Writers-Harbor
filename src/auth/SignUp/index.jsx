@@ -17,7 +17,7 @@ const SignUp = () => {
           <Welcome/>
         </div>
       </div>
-      <div className='w-full h-[100%] md:w-[55%] bg-[#E4F2E7] px-16 md:py-8 md:px-16'>
+      <div className='w-full md:w-[55%] bg-[#E4F2E7] px-16 py-8 md:px-16 flex justify-center items-center'>
         <div data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration={2000}>
             <SignUpForm />
         </div>

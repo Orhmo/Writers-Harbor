@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CompletedModal from '../../components/CompletedModal';
 import { subscribeToNewsletter } from '../../state/newsletter/newsletterActions';
+import CompletedModal from '../../components/Footer/CompletedModal';
 
 export default function NewsletterSection() {
   const [stage, setStage] = useState(1);

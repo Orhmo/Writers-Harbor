@@ -78,11 +78,11 @@ export default function TopNavBar() {
                 <>
                   {weatherTemp > 25 ? (
                     <FiSun className='text-xl mr-2 text-yellow-300' />
-                  ) : weatherTemp > 15 ? (
+                  ) : weatherTemp < 15 ? (
                     <FiCloud className='text-xl mr-2 text-white' />
-                  ) : weatherTemp > 5 ? (
+                  ) : weatherTemp < 5 ? (
                     <FiCloudDrizzle className='text-xl mr-2 text-gray-300' />
-                  ) : weatherTemp > 0 ? (
+                  ) : weatherTemp < 0 ? (
                     <FiCloudRain className='text-xl mr-2 text-gray-500' />
                   ) : (
                     <FiCloudSnow className='text-xl mr-2 tex-white' />
@@ -114,7 +114,7 @@ export default function TopNavBar() {
           <div className='hidden md:flex gap-2'>
             {/* Sign In Button */}
             <div className='flex items-center'>
-              <Link to='/signin' className='lg:inline-block'>
+              <Link to='/login' className='lg:inline-block'>
                 <button
                   className={`text-center bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] hover:border-2 hover:border-white rounded-lg transition-all  px-2 ${
                     isScrolled ? 'text-[#93BFB7]' : 'text-white'
@@ -127,13 +127,13 @@ export default function TopNavBar() {
 
             {/* Sign Up Button */}
             <div>
-              <Link to='/signup' className='lg:inline-block'>
+              <Link to='/create-user' className='lg:inline-block'>
                 <button
                   className={`hidden lg:inline-block text-center border-2 border-white bg-transparent py-2 text-sm font-medium hover:text-[#A9D9D0] rounded-lg transition-all  shadow-xs px-2 shadow-[#A9D9D0] hover:border-[#2D3E40] ${
                     isScrolled ? 'text-[#93BFB7]' : 'text-white'
                   }`}
                 >
-                  Get started
+                  New User
                 </button>
               </Link>
             </div>

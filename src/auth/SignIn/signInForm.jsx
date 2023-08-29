@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { EyeClose, EyeEmpty } from 'iconoir-react';
 import { loginUser } from '../../state/user/userActions';
+import { BASE_URL, SIGN_IN } from '../../constants/endpoints.constant';
+import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 function SignInForm() {
   const dispatch = useDispatch();
@@ -30,7 +34,7 @@ function SignInForm() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const { email, password } = formData;
@@ -40,30 +44,35 @@ function SignInForm() {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    if (password.length < 6) {
-      newErrors.password = 'Password should include at least 6 characters';
-    }
-
-    // Perform authentication logic here using email and password
-    // For demonstration purposes, let's use a dummy email and password
-    if (email !== 'test@example.com' || password !== 'secret') {
-      newErrors.loginError = 'Email or password is incorrect';
+    if (password.length < 5) {
+      newErrors.password = 'Password should include at least 5 characters';
     }
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const user = { email, role: 'user' }; // Dummy user
-      dispatch(loginUser(user));
+      try {
+        const response = await axios.post(`${BASE_URL}${SIGN_IN}`, { email, password });
+        if (response.status === 200) {
+          toast.success('Welcome to writersHarbor');
+          const user = response.data; 
+          dispatch(loginUser(user));
+        } else {
+          toast.error('Login failed');
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        toast.error('An error occurred during login');
+      }
     }
   };
 
   return (
-    <div className='flex justify-center align-center overflow-x-hidden my-12 md:my-8'>
-      <div className='w-full bg-[#E4F2E7] px-4 py-8 md:py-20 md:px-8'>
+    <div className='w-[80vw] md:w-[40vw]'>
+    <div className='px-2 my-auto md:py-20 md:px-8'> 
         <form
           onSubmit={handleSubmit}
-          className='bg-[#2D3E40] shadow-lg rounded-xl px-10 pt-6 pb-8 mb-4'
+          className='bg-[#2D3E40] shadow-lg rounded-xl px-6 md:px-10 pt-6 pb-8 mb-4'
         >
           <div className='mb-4'>
             <div className='my-4'>
@@ -75,13 +84,13 @@ function SignInForm() {
               </p>
             </div>
 
-            <label className='block my-8'>
-              <span className='text-[#E4F2E7] text-[12px] md:text-[16px] leading-6 font-normal'>
+            <label className='block my-4 md:my-8'>
+              <span className='text-[#E4F2E7] text-[12px] font-semibold md:text-[16px] leading-6 md:font-normal'>
                 Email
               </span>
               <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
                 <input
-                  className='block w-full border-2 indent-4 py-3 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] sm:text-sm'
+                  className='block w-full border-2 text-xs indent-2 py-1 md:py-3 border-[#1A1A1A] rounded-md shadow-sm focus:ring-[#FEF0F2] focus:border-[#FEF0F2] md:text-sm'
                   type='email'
                   name='email'
                   value={formData.email}
@@ -96,12 +105,12 @@ function SignInForm() {
             </label>
 
             <label className='block mb-8'>
-              <span className='text-[#E4F2E7] text-[12px] md:text-[16px] leading-6 font-normal'>
+              <span className='text-[#E4F2E7] text-[12px] font-semibold md:text-[16px] leading-6 md:font-normal'>
                 Password
               </span>
               <div className='mt-1 relative border-[6px] border-[#2D3E40] rounded-lg'>
                 <input
-                  className='block w-full border-2 indent-4 py-3 border-[#1A1A1A] rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  className='block w-full border-2 text-xs indent-2 py-1 md:py-3 border-[#1A1A1A] rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 md:text-sm'
                   type={showPassword ? 'text' : 'password'}
                   name='password'
                   placeholder='password'
@@ -111,7 +120,7 @@ function SignInForm() {
                 />
 
                 <span
-                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-sm'
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? <EyeClose /> : <EyeEmpty />}

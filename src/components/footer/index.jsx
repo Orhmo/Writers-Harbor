@@ -1,12 +1,11 @@
 import React from 'react';
-import { CompanyLogo } from '../utils/svg';
 import { Link } from 'react-router-dom';
-import Newsletter from '../layouts/footer/NewsletterSection';
+import Newsletter from '../../layouts/footer/NewsletterSection';
 
 export default function Footer() {
   return (
     <>
-      <Newsletter />
+      <Newsletter/>
       <div className='bg-[#387373]'>
         <section className=' pt-10'>
           <div className=' text-md-start mt-5 '>

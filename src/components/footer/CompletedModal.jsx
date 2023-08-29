@@ -1,5 +1,5 @@
 import { IoCloseOutline } from 'react-icons/io5';
-import mailIcon from '../assets/mailIcon.svg';
+import mailIcon from '../../assets/mailIcon.svg';
 
 function CompletedModal({ handleModal, nextModal }) {
   return (
